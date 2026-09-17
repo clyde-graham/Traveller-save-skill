@@ -1,18 +1,23 @@
 ---
-name: traveller-save
-description: >
-  Handles all campaign file save operations for the Foreven Sector Traveller campaign.
-  Use this skill whenever the user issues /save_tsv, /save_context, /save_sectors, or /save_all
-  commands, or whenever any campaign file (TSV sector data, context markdown, or sectors markdown)
-  needs to be written and presented for download. This skill enforces pre-flight checks, timestamp
-  freshness, correct bash patterns, and single-version validation on every save. Always use
-  this skill for save operations — do not rely on memory or improvise the workflow.
+name: "traveller-save"
+description: "Handles all campaign file save operations for the Foreven Sector Traveller campaign — and ONLY that project (myGame_foreven_* files under /mnt/project/). Use this skill when the user issues /save_tsv, /save_context, /save_sectors, or /save_all within the Foreven project, or whenever a myGame_foreven_*.tsv, _context.md, or _sectors.md file needs to be written and presented for download. Within Foreven, always use this skill rather than improvising the save workflow. Do NOT use this skill in TravSolo2 or any other Traveller project, even when the task looks similar (saving a TSV, sector markdown, or campaign-state file) — other projects have their own save/versioning conventions. If the myGame_foreven_* baseline files aren't present, this skill does not apply — stop and defer to the active project's own conventions instead."
 ---
 
 # Traveller Save Skill
 
 Handles `/save_tsv`, `/save_context`, `/save_sectors`, and `/save_all` for the Foreven Sector campaign.
 Each command follows the same three-phase structure: **Pre-flight → Execute → Post-flight**.
+
+---
+
+## Scope Check (run first, every time)
+
+Before doing anything else, confirm this really is the Foreven Sector campaign:
+
+- The connected project should already contain `myGame_foreven_*.tsv`, `myGame_foreven_*_context.md`, and `myGame_foreven_*_sectors.md` baseline files under `/mnt/project/`.
+- If those files are **not** present — for example, if the active project is TravSolo2 or any other Traveller campaign — **stop immediately.** This skill does not apply. Do not adapt its file-naming pattern, timestamp logic, or phases to a different project's files. Defer to that project's own save/versioning conventions instead, and say so plainly rather than improvising a lookalike workflow.
+
+Only proceed to Phase 1 once the Foreven baseline files are confirmed present.
 
 ---
 
@@ -235,3 +240,4 @@ After presenting the file(s) for download:
 | Validation failure | Required section missing from output | Read full source file before writing |
 | Missing TSV changes | World edits not in saved TSV | Maintain Pending TSV Changes list; warn if absent |
 | Duplicate versions | Two files of same type in project knowledge | Post-flight reminder; stop on pre-flight detection |
+| Wrong project | Skill invoked outside Foreven (e.g. TravSolo2) | Run the Scope Check first; stop if baseline files aren't present |
