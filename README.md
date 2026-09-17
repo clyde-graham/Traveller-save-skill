@@ -4,6 +4,8 @@ A working skill for Claude's skill system, packaged as a concrete example of how
 
 This skill is specific to a Mongoose Traveller 2e campaign set in the Foreven Sector. It is published here not as a general-purpose tool, but as a reference showing how skills can be structured to enforce multi-step workflows, pre/post-flight checks, and external validation scripts.
 
+> **Note:** This is a point-in-time snapshot, not a live mirror of the version in active use in the campaign. The actual skill evolves as real play surfaces new edge cases; this repo is updated periodically, not on every change.
+
 ---
 
 ## What This Skill Does
